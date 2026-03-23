@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persons>
+    <person>
+        <id>1</id>
+        <name>Alejandro</name>
+        <coordinates>
+            <x>4</x>
+            <y>663.0</y>
+        </coordinates>
+        <creationDate>Mon Mar 23 19:34:28 MSK 2026</creationDate>
+        <height>536131.0</height>
+        <birthday>2007-12-03T10:15:30</birthday>
+        <hairColor>BROWN</hairColor>
+        <nationality>RUSSIA</nationality>
+    </person>
+</persons>
