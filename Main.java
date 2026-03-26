@@ -10,9 +10,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import org.xml.sax.InputSource;
 
-/**
- * Main application class. Handles command loop and file I/O.
- */
+
 public class Main {
     private static CollectionManager collectionManager;
     private static String fileName;
@@ -22,10 +20,10 @@ public class Main {
     public static void main(String[] args) {
         // Get file name from environment variable
         fileName = System.getenv("FILE_NAME");
-if (fileName == null || fileName.trim().isEmpty()) {
-    fileName = "data.xml";
-    System.out.println("FILE_NAME not set. Using default: " + fileName);
-}
+        if (fileName == null || fileName.trim().isEmpty()) {
+            fileName = "data.xml";
+            System.out.println("FILE_NAME not set. Using default: " + fileName);
+        }
 
         collectionManager = new CollectionManager();
         loadCollectionFromFile();
@@ -197,12 +195,13 @@ if (fileName == null || fileName.trim().isEmpty()) {
             System.out.println("Element not added: it is not less than the minimum.");
         }
     }
+/* Both remove greater and remove lower compare name, geight, id*/
 
     private static void removeGreater(BufferedReader input) {
         Person p = readPerson(input, true, -1);
         if (p != null) {
             int removed = collectionManager.removeGreater(p);
-            System.out.println("Removed elements: " + removed);
+            System.out.println("Removed elements greater than the person provided: " + removed);
         }
     }
 
@@ -210,13 +209,14 @@ if (fileName == null || fileName.trim().isEmpty()) {
         Person p = readPerson(input, true, -1);
         if (p != null) {
             int removed = collectionManager.removeLower(p);
-            System.out.println("Removed elements: " + removed);
+            System.out.println("Removed elements lower than the person provided: " + removed);
         }
     }
 
+   /*Allows for different line structures too) */
     private static void executeScript(String scriptFileName) {
         if (scriptDepth >= MAX_SCRIPT_DEPTH) {
-            System.err.println("Maximum script recursion depth exceeded.");
+            System.err.println("Maximum script recursion depth exceeded."); /*10 times max to eliminate unnecessary cycles */
             return;
         }
         scriptDepth++;
@@ -230,10 +230,10 @@ if (fileName == null || fileName.trim().isEmpty()) {
         } catch (IOException e) {
             System.err.println("Error reading script: " + e.getMessage());
         } finally {
-            scriptDepth--;
+            scriptDepth--; /*reduces again to make sure it follows the same procedure for the next command */
         }
     }
-
+/*Person builder*/
     private static Person readPerson(BufferedReader input, boolean interactive, int existingId) {
         try {
             String name = readString(input, "name", interactive, true);
@@ -502,7 +502,7 @@ class CollectionManager {
         toRemove.forEach(collection::remove);
         return toRemove.size();
     }
-
+/*look for people based on prefix*/
     public void filterStartsWithName(String prefix) {
         boolean found = false;
         for (Person p : collection.values()) {
@@ -523,9 +523,7 @@ class CollectionManager {
     }
 }
 
-/**
- * Person class.
- */
+
 class Person implements Comparable<Person> {
     private int id;
     private String name;
@@ -615,9 +613,7 @@ class Person implements Comparable<Person> {
     }
 }
 
-/**
- * Coordinates class.
- */
+
 class Coordinates {
     private long x;
     private double y; // max 663
@@ -640,9 +636,7 @@ class Coordinates {
     }
 }
 
-/**
- * Location class.
- */
+
 class Location {
     private double x;
     private Double y; // not null
@@ -666,9 +660,7 @@ class Location {
     }
 }
 
-/**
- * Hair color enum.
- */
+
 enum Color {
     GREEN, YELLOW, BROWN
 }
@@ -721,7 +713,7 @@ class XMLParser {
         }
         return persons;
     }
-
+/*Saving everything on the file */
     public static void writePersons(BufferedWriter writer, Collection<Person> persons) throws ParserConfigurationException, TransformerException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
